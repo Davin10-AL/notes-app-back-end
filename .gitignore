@@ -1,2 +1,10 @@
 node_modules
 notes-api-webserver.pem
+.env
+.prod.env
+
+# local IDE
+.kiro
+.postman
+.vscode
+*.log

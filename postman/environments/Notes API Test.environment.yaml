@@ -1,0 +1,10 @@
+name: Notes API Test
+values:
+  - key: noteId
+    value: ''
+  - key: badNotePayload
+    value: ''
+  - key: currentBadNotePayload
+    value: ''
+  - key: badNotePayloads
+    value: ''

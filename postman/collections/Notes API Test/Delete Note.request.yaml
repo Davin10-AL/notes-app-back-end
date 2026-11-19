@@ -1,0 +1,88 @@
+$kind: http-request
+url: localhost:3000/notes/{{noteId}}
+method: DELETE
+scripts:
+  - type: afterResponse
+    code: "// test 1\r
+
+      pm.test('response status code should have 200 value', () => {\r
+
+      \   pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      // test 2 response Content-Type header should have application/json value\r
+
+      pm.test('response Content-Type header should have application/json value', () => {\r
+
+      \   pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8')\r
+
+      }); \r
+
+      \r
+
+      // test 3 response body should be an object\r
+
+      pm.test('response body should be an object', () => {\r
+
+      \   const responseJson = pm.response.json();\r
+
+      \   pm.expect(responseJson).to.be.an('object');\r
+
+      });\r
+
+      \r
+
+      // test 4 response body should have correct properti and value\r
+
+      pm.test('response body should have correct property and value', () => {\r
+
+      \   const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \   pm.expect(responseJson).to.have.ownProperty('status');\r
+
+      \   pm.expect(responseJson.status).to.equals('success');\r
+
+      \   pm.expect(responseJson).to.have.ownProperty('message');\r
+
+      \   pm.expect(responseJson.message).to.equals('catatan berhasil dihapus');\r
+
+      }); \r
+
+      \r
+
+      // test 5 when request the deleted note\r
+
+      pm.test('when request the deleted note', () => {\r
+
+      \    const noteId = pm.environment.get('noteId');\r
+
+      \    pm.sendRequest(`http://localhost:3000/notes/${noteId}`, (error, response) => {\r
+
+      \        if(!error) {\r
+
+      \            pm.test('the deleted note should be not found', () => {\r
+
+      \                pm.expect(response.code).to.equals(404);\r
+
+      \                const responseJson = response.json();\r
+
+      \                pm.expect(responseJson.status).to.equals('fail');\r
+
+      \                pm.expect(responseJson.message).to.equals('Catatan tidak ditemukan');\r
+
+      \            });\r
+
+      \        }\r
+
+      \    });\r
+
+      });\r
+
+      \r\n"
+    language: text/javascript
+order: 5000

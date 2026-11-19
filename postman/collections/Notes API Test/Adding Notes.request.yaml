@@ -1,0 +1,99 @@
+$kind: http-request
+url: localhost:3000/notes
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Catatan A\",\r
+
+    \    \"tags\": [\"Android\", \"Web\"],\r
+
+    \    \"body\": \"Isi dari catatan A\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "// test 1 response status code should have 201 values\r
+
+      pm.test('response status code should have 201 value', () => {\r
+
+      \ pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      // test 2 response Content-Type header should have application/json value\r
+
+      pm.test('response Content-Type header should have application/json value', () => {\r
+
+      \  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r
+
+      });\r
+
+      \r
+
+      // test 3 response body should be an object\r
+
+      pm.test('response body should an object', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      }); \r
+
+      \r
+
+      // test 4 response body should have the correct property and value\r
+
+      pm.test('response body should have correct property and value', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    pm.expect(responseJson).to.ownProperty('status');\r
+
+      \    pm.expect(responseJson.status).to.equals('success');\r
+
+      \    pm.expect(responseJson).to.ownProperty('message');\r
+
+      \    pm.expect(responseJson.message).to.equals('Catatan berhasil ditambahkan');\r
+
+      \    pm.expect(responseJson).to.ownProperty('data');\r
+
+      \    pm.expect(responseJson.data).to.be.an('object');\r
+
+      });\r
+
+      \r
+
+      // test 5 response body data should have noteId property and not equal to empty\r
+
+      pm.test('response body data should have noteId property and not equal to empty', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    const { data } = responseJson;\r
+
+      \ \r
+
+      \    pm.expect(data).to.ownProperty('noteId');\r
+
+      \    pm.expect(data.noteId).to.not.equals('');\r
+
+      \ \r
+
+      \    pm.environment.set('noteId', data.id);\r
+
+      });\r
+
+      \r
+
+      const responseJson = pm.response.json();\r
+
+      // Menyimpan noteId otomatis ke Environment\r
+
+      pm.environment.set('noteId', responseJson.data.noteId);"
+    language: text/javascript
+order: 1000

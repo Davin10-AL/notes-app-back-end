@@ -1,0 +1,8 @@
+import server from './index.js';
+
+const port = process.env.PORT;
+const host = process.env.HOST;
+
+server.listen(port, host, () => {
+  console.log(`Server running at http://${host}:${port}`);
+});
