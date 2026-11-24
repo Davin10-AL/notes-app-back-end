@@ -1,4 +1,4 @@
-import TokenManager from '../utils/token-manager.js';
+import TokenManager from '../security/token-manager.js';
 import { AuthenticationError } from '../exceptions/index.js';
 import response from '../utils/response.js';
 
