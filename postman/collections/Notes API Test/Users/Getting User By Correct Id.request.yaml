@@ -1,0 +1,94 @@
+$kind: http-request
+url: GET localhost:3000/users/{{currentUserId}}
+method: GET
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 200 value', () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
+
+      \ 
+      pm.expect(pm.response.headers.get('Content-Type')).to.equals('application\
+      /json; charset=utf-8');\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response body should an object', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body should have correct property and value', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(responseJson).to.have.ownProperty('status');\r
+
+      \    pm.expect(responseJson.status).to.equals('success');\r
+
+      \    pm.expect(responseJson).to.have.ownProperty('data');\r
+
+      \    pm.expect(responseJson.data).to.be.an('object');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body data should contain user object', () => {\r
+
+      \    const { data } = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(data).to.have.ownProperty('user');\r
+
+      \    pm.expect(data).to.be.an('object');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('user object should contain only id, username, and fullname with
+      correct value', () => {\r
+
+      \    const { data } = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(data).to.have.ownProperty('id');\r
+
+      \    pm.expect(data.id).to.equals(pm.environment.get('currentUserId'));\r
+
+      \    pm.expect(data).to.have.ownProperty('username');\r
+
+      \    pm.expect(data.username).to.includes(pm.environment.get('newUsername\
+      '));\r
+
+      \    pm.expect(data).to.have.ownProperty('fullname');\r
+
+      \    pm.expect(data.fullname).to.equals(pm.environment.get('newFullname')\
+      );\r
+
+      \    pm.expect(data).to.have.ownProperty('created_at');\r
+
+      \    pm.expect(data).to.have.ownProperty('updated_at');\r
+
+      });"
+    language: text/javascript
+order: 4000

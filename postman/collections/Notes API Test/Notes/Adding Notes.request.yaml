@@ -12,6 +12,10 @@ body:
     \    \"body\": \"Isi dari catatan A\"\r
 
     }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
 scripts:
   - type: afterResponse
     code: "// test 1 response status code should have 201 values\r
@@ -24,11 +28,15 @@ scripts:
 
       \r
 
-      // test 2 response Content-Type header should have application/json value\r
+      // test 2 response Content-Type header should have application/json
+      value\r
 
-      pm.test('response Content-Type header should have application/json value', () => {\r
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
 
-      \  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r
+      \ 
+      pm.expect(pm.response.headers.get('Content-Type')).to.equals('application\
+      /json; charset=utf-8');\r
 
       });\r
 
@@ -58,7 +66,8 @@ scripts:
 
       \    pm.expect(responseJson).to.ownProperty('message');\r
 
-      \    pm.expect(responseJson.message).to.equals('Catatan berhasil ditambahkan');\r
+      \    pm.expect(responseJson.message).to.equals('Catatan berhasil
+      ditambahkan');\r
 
       \    pm.expect(responseJson).to.ownProperty('data');\r
 
@@ -68,9 +77,11 @@ scripts:
 
       \r
 
-      // test 5 response body data should have noteId property and not equal to empty\r
+      // test 5 response body data should have noteId property and not equal to
+      empty\r
 
-      pm.test('response body data should have noteId property and not equal to empty', () => {\r
+      pm.test('response body data should have noteId property and not equal to
+      empty', () => {\r
 
       \    const responseJson = pm.response.json();\r
 
@@ -96,4 +107,4 @@ scripts:
 
       pm.environment.set('noteId', responseJson.data.noteId);"
     language: text/javascript
-order: 1000
+order: 2000

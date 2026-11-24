@@ -1,0 +1,23 @@
+$kind: http-request
+url: localhost:3000/notes
+method: GET
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 401 value', () => {\r
+
+      \   pm.response.to.have.status(401);\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
+
+      \ 
+      pm.expect(pm.response.headers.get('Content-Type')).to.equals('application\
+      /json; charset=utf-8');\r
+
+      }); "
+    language: text/javascript
+order: 8000

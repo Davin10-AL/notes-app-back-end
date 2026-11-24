@@ -1,0 +1,59 @@
+$kind: http-request
+url: localhost:3000/authentications
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"refreshToken\": \"xxxxx\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 400 value', () => {\r
+
+      \   pm.response.to.have.status(400);\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
+
+      \ 
+      pm.expect(pm.response.headers.get('Content-Type')).to.equals('application\
+      /json; charset=utf-8');\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response body should an object', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body should have correct property and value', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(responseJson).to.ownProperty('status');\r
+
+      \    pm.expect(responseJson.status).to.equals('failed');\r
+
+      \    pm.expect(responseJson).to.ownProperty('message');\r
+
+      \    pm.expect(responseJson.message).to.equals('Refresh token tidak
+      valid');\r
+
+      });"
+    language: text/javascript
+order: 4000

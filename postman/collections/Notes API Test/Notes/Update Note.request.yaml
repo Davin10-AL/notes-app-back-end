@@ -12,6 +12,10 @@ body:
     \    \"body\": \"Isi dari Catatan A Revised\"\r
 
     }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
 scripts:
   - type: afterResponse
     code: "// test 1 respon 200\r
@@ -28,9 +32,11 @@ scripts:
 
       // test 2\r
 
-      pm.test('response Content-Type header should have application/json value', () => {\r
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
 
-      \   pm.expect(pm.response.headers.get('Content-Type')).to.equals(\"application/json; charset=utf-8\");\r
+      \   pm.expect(pm.response.headers.get('Content-Type')).to.equals(\"applic\
+      ation/json; charset=utf-8\");\r
 
       }); \r
 
@@ -62,7 +68,8 @@ scripts:
 
       \   pm.expect(responseJson).to.have.ownProperty('message');\r
 
-      \   pm.expect(responseJson.message).to.equals('Catatan berhasil diperbarui');\r
+      \   pm.expect(responseJson.message).to.equals('Catatan berhasil
+      diperbarui');\r
 
       });\r
 
@@ -74,11 +81,13 @@ scripts:
 
       \    const noteId = pm.environment.get('noteId');\r
 
-      \    pm.sendRequest(`http://localhost:3000/notes/${noteId}`, (error, response) => {\r
+      \    pm.sendRequest(`http://localhost:3000/notes/${noteId}`, (error,
+      response) => {\r
 
       \        if(!error) {\r
 
-      \            pm.test('then the updated note should contain the latest data', () => {\r
+      \            pm.test('then the updated note should contain the latest
+      data', () => {\r
 
       \              const responseJson = response.json();\r
 
@@ -108,4 +117,4 @@ scripts:
 
       });"
     language: text/javascript
-order: 4000
+order: 5000

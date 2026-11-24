@@ -4,6 +4,10 @@ method: POST
 body:
   type: json
   content: "{{currentBadNotePayload}}"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
 scripts:
   - type: beforeRequest
     code: "let badNotePayloads = pm.environment.get('badNotePayloads');  // ini akan
@@ -108,4 +112,4 @@ scripts:
 
       repeatRequestUntilDatasetEmpty();"
     language: text/javascript
-order: 1899
+order: 1000

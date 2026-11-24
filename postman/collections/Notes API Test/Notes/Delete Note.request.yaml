@@ -1,6 +1,10 @@
 $kind: http-request
 url: localhost:3000/notes/{{noteId}}
 method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
 scripts:
   - type: afterResponse
     code: "// test 1\r
@@ -13,11 +17,14 @@ scripts:
 
       \r
 
-      // test 2 response Content-Type header should have application/json value\r
+      // test 2 response Content-Type header should have application/json
+      value\r
 
-      pm.test('response Content-Type header should have application/json value', () => {\r
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
 
-      \   pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8')\r
+      \   pm.expect(pm.response.headers.get('Content-Type')).to.equals('applica\
+      tion/json; charset=utf-8')\r
 
       }); \r
 
@@ -49,7 +56,8 @@ scripts:
 
       \   pm.expect(responseJson).to.have.ownProperty('message');\r
 
-      \   pm.expect(responseJson.message).to.equals('catatan berhasil dihapus');\r
+      \   pm.expect(responseJson.message).to.equals('catatan berhasil
+      dihapus');\r
 
       }); \r
 
@@ -61,7 +69,8 @@ scripts:
 
       \    const noteId = pm.environment.get('noteId');\r
 
-      \    pm.sendRequest(`http://localhost:3000/notes/${noteId}`, (error, response) => {\r
+      \    pm.sendRequest(`http://localhost:3000/notes/${noteId}`, (error,
+      response) => {\r
 
       \        if(!error) {\r
 
@@ -73,7 +82,8 @@ scripts:
 
       \                pm.expect(responseJson.status).to.equals('fail');\r
 
-      \                pm.expect(responseJson.message).to.equals('Catatan tidak ditemukan');\r
+      \                pm.expect(responseJson.message).to.equals('Catatan tidak
+      ditemukan');\r
 
       \            });\r
 
@@ -85,4 +95,4 @@ scripts:
 
       \r\n"
     language: text/javascript
-order: 5000
+order: 7000

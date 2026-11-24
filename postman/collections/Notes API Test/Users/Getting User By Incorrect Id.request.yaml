@@ -1,0 +1,51 @@
+$kind: http-request
+url: GET localhost:3000/users/xxxx
+method: GET
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 404 value', () => {\r
+
+      \    pm.response.to.have.status(404);\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
+
+      \ 
+      pm.expect(pm.response.headers.get('Content-Type')).to.equals('application\
+      /json; charset=utf-8');\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response body should an object', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body should have correct property and value', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(responseJson).to.have.ownProperty('status');\r
+
+      \    pm.expect(responseJson.status).to.equals('failed');\r
+
+      \    pm.expect(responseJson).to.have.ownProperty('message');\r
+
+      \    pm.expect(responseJson.message).to.equals('User tidak ditemukan');\r
+
+      });"
+    language: text/javascript
+order: 5000

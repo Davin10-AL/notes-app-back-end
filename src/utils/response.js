@@ -2,7 +2,7 @@ const response = (res, statusCode, message, data) => {
   return res
     .status(statusCode)
     .json({
-      status: statusCode < 400 ? 'success' : 'fail',
+      status: statusCode < 400 ? 'success' : 'failed',
       message,
       data,
     })

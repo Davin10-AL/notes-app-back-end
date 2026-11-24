@@ -1,0 +1,109 @@
+$kind: http-request
+name: Adding User with Exist username
+url: localhost:3000/users
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"username\": \"testing\",\r
+
+    \    \"password\": \"{{newPassword}}\",\r
+
+    \    \"fullname\": \"{{newFullname}}\"\r
+
+    }"
+scripts:
+  - type: beforeRequest
+    code: "/* referensi:
+      https://learning.postman.com/docs/writing-scripts/script-references/postm\
+      an-sandbox-api-reference/#sending-requests-from-scripts */\r
+
+      \ \r
+
+      const postRequest = {\r
+
+      \    url: 'http://localhost:3000/users',\r
+
+      \    method: 'POST',\r
+
+      \    header: {\r
+
+      \    'Content-Type': 'application/json',\r
+
+      \    },\r
+
+      \    body: {\r
+
+      \        mode: 'raw',\r
+
+      \        raw: JSON.stringify({\r
+
+      \            username: 'testing',\r
+
+      \            password: pm.environment.get('newPassword'),\r
+
+      \            fullname: pm.environment.get('newFullname')\r
+
+      \        }),\r
+
+      \    },\r
+
+      };\r
+
+      \ \r
+
+      pm.sendRequest(postRequest, (error, response) => {\r
+
+      \    console.log(error ? error : response.json());\r
+
+      });"
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test('response status code should have 400 value', () => {\r
+
+      \   pm.response.to.have.status(400);\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
+
+      \ 
+      pm.expect(pm.response.headers.get('Content-Type')).to.equals('application\
+      /json; charset=utf-8');\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response body should an object', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body should have correct property and value', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(responseJson).to.ownProperty('status');\r
+
+      \    pm.expect(responseJson.status).to.equals('failed');\r
+
+      \    pm.expect(responseJson).to.ownProperty('message');\r
+
+      \    pm.expect(responseJson.message).to.equals('Gagal menambahkan user.
+      Username sudah digunakan.');\r
+
+      });"
+    language: text/javascript
+order: 2000

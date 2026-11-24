@@ -1,0 +1,88 @@
+$kind: http-request
+url: localhost:3000/users
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"username\": \"{{$timestamp}}={{newUsername}}\",\r
+
+    \    \"password\": \"{{newPassword}}\",\r
+
+    \    \"fullname\": \"{{newFullname}}\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 201 value', () => {\r
+
+      \   pm.response.to.have.status(201);\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value',
+      () => {\r
+
+      \ 
+      pm.expect(pm.response.headers.get('Content-Type')).to.equals('application\
+      /json; charset=utf-8');\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response body should an object', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body should have correct property and value', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(responseJson).to.ownProperty('status');\r
+
+      \    pm.expect(responseJson.status).to.equals('success');\r
+
+      \    pm.expect(responseJson).to.ownProperty('message');\r
+
+      \    pm.expect(responseJson.message).to.equals('User berhasil
+      ditambahkan');\r
+
+      \    pm.expect(responseJson).to.ownProperty('data');\r
+
+      \    pm.expect(responseJson.data).to.be.an('object');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body data should have userId property and not equal to
+      empty', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \    const { data } = responseJson;\r
+
+      \ \r
+
+      \    pm.expect(data).to.ownProperty('id');\r
+
+      \    pm.expect(data.id).to.not.equals('');\r
+
+      \ \r
+
+      \    pm.environment.set('currentUserId', data.id);\r
+
+      });"
+    language: text/javascript
+order: 1000

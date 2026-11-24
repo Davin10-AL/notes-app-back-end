@@ -1,6 +1,10 @@
 $kind: http-request
 url: localhost:3000/notes/{{noteId}}
 method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
 scripts:
   - type: afterResponse
     code: |-
@@ -63,4 +67,4 @@ scripts:
           pm.expect(note.body).to.equals(expectedBody);
       });
     language: text/javascript
-order: 3000
+order: 4000

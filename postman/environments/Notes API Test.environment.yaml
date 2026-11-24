@@ -6,5 +6,21 @@ values:
     value: ''
   - key: currentBadNotePayload
     value: ''
+  - key: newUsername
+    value: ''
+  - key: newPassword
+    value: ''
+  - key: newFullname
+    value: ''
+  - key: currentUserId
+    value: ''
+  - key: badUserPayloads
+    value: ''
+  - key: currentBadUserPayload
+    value: ''
   - key: badNotePayloads
+    value: ''
+  - key: accessToken
+    value: ''
+  - key: refreshToken
     value: ''
