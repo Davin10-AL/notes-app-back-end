@@ -1,4 +1,5 @@
-import jwt from 'jsonwebtoken';
+import TokenManager from '../utils/token-manager.js';
+import { AuthenticationError } from '../exceptions/index.js';
 import response from '../utils/response.js';
 
 const authMiddleware = (req, res, next) => {
@@ -11,11 +12,14 @@ const authMiddleware = (req, res, next) => {
   const token = authHeader.slice(7);
 
   try {
-    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_KEY);
+    const payload = TokenManager.verifyAccessToken(token);
     req.userId = payload.userId;
     return next();
-  } catch {
-    return response(res, 401, 'Access token tidak valid', null);
+  } catch (err) {
+    if (err instanceof AuthenticationError) {
+      return response(res, err.statusCode, err.message, null);
+    }
+    return next(err);
   }
 };
 
