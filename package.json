@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon ./src/server/server.js",
     "lint": "eslint ./src",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "db:reset-test": "node ./scripts/reset-test-data.mjs"
   },
   "keywords": [],
   "author": "",
