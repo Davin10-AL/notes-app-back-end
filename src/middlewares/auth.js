@@ -13,7 +13,7 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const payload = TokenManager.verifyAccessToken(token);
-    req.userId = payload.userId;
+    req.user = { id: payload.userId };
     return next();
   } catch (err) {
     if (err instanceof AuthenticationError) {

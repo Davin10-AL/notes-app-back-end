@@ -1,0 +1,28 @@
+$kind: http-request
+url: http://localhost:3000/notes/{{noteIdUserA}}
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessTokenUserA}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 200 value', () => {\r
+
+      \   pm.response.to.have.status(200);\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value', () => {\r
+
+      \  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r
+
+      });\r
+
+      \ \r
+
+      // tidak perlu melakukan uji pada nilai body response, karena sudah pernah diuji pada folder /notes"
+    language: text/javascript
+order: 12000

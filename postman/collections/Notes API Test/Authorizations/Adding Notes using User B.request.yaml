@@ -1,0 +1,61 @@
+$kind: http-request
+url: http://localhost:3000/notes
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Catatan B\",\r
+
+    \    \"tags\": [\"Android\", \"Web\"],\r
+
+    \    \"body\": \"Isi dari catatan B\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessTokenUserB}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 201 value', () => {\r
+
+      \   pm.response.to.have.status(201);\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value', () => {\r
+
+      \  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body data should contains note id', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      \    pm.expect(responseJson).to.have.ownProperty('data');\r
+
+      \    pm.expect(responseJson.data).to.be.an('object');\r
+
+      \    pm.expect(responseJson.data).to.have.ownProperty('noteId');\r
+
+      \    pm.expect(responseJson.data.noteId).to.be.a('string');\r
+
+      \ \r
+
+      \    // memasukkan noteId ke dalam environment variable\r
+
+      \    pm.environment.set('noteIdUserB', responseJson.data.noteId);\r
+
+      });"
+    language: text/javascript
+order: 2000

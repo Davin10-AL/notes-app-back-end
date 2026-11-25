@@ -1,0 +1,55 @@
+$kind: http-request
+url: http://localhost:3000/notes/{{noteIdUserA}}
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Catatan A Revised Again\",\r
+
+    \    \"tags\": [\"Android\", \"Web\"],\r
+
+    \    \"body\": \"Isi dari Catatan A Revised Again\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessTokenUserB}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 403 value', () => {\r
+
+      \   pm.response.to.have.status(403);\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value', () => {\r
+
+      \  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body should contain correct value', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      \    pm.expect(responseJson).to.have.ownProperty('status');\r
+
+      \    pm.expect(responseJson.status).to.equals('fail');\r
+
+      \    pm.expect(responseJson).to.have.ownProperty('message');\r
+
+      \    pm.expect(responseJson.message).to.equals('Anda tidak berhak mengakses resource ini');\r
+
+      });"
+    language: text/javascript
+order: 10000

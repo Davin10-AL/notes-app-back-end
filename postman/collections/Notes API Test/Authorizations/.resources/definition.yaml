@@ -1,0 +1,182 @@
+$kind: collection
+scripts:
+  - type: http:beforeRequest
+    code: "// membuat User A \r
+
+      const createUserARequest = {\r
+
+      \    url: 'http://localhost:3000/users',\r
+
+      \    method: 'POST',\r
+
+      \    header: {\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \    },\r
+
+      \    body: {\r
+
+      \        mode: 'raw',\r
+
+      \        raw: JSON.stringify({\r
+
+      \            username: 'user_a',\r
+
+      \            password: 'secret',\r
+
+      \            fullname: 'User A',\r
+
+      \        }),\r
+
+      \    },\r
+
+      };\r
+
+      \ \r
+
+      pm.sendRequest(createUserARequest, (error, response) => {\r
+
+      \    console.log(error ? error : response);\r
+
+      \ \r
+
+      \    // Setelah terdaftar, login dengan User A\r
+
+      \    const loginUserRequest = {\r
+
+      \        url: 'http://localhost:3000/authentications',\r
+
+      \        method: 'POST',\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify({\r
+
+      \                username: 'user_a',\r
+
+      \                password: 'secret',\r
+
+      \            }),\r
+
+      \        },\r
+
+      \    };\r
+
+      \ \r
+
+      \    pm.sendRequest(loginUserRequest, (error, response) => {\r
+
+      \        if (!error) {\r
+
+      \            // memasukkan access token User A ke environment variabel\r
+
+      \            const { data: { accessToken } } = response.json();\r
+
+      \            pm.environment.set('accessTokenUserA', accessToken);\r
+
+      \        }\r
+
+      \    });\r
+
+      });\r
+
+      \ \r
+
+      // membuat User B \r
+
+      const createUserBRequest = {\r
+
+      \    url: 'http://localhost:3000/users',\r
+
+      \    method: 'POST',\r
+
+      \    header: {\r
+
+      \        'Content-Type': 'application/json',\r
+
+      \    },\r
+
+      \    body: {\r
+
+      \        mode: 'raw',\r
+
+      \        raw: JSON.stringify({\r
+
+      \            username: 'user_b',\r
+
+      \            password: 'secret',\r
+
+      \            fullname: 'User B',\r
+
+      \        }),\r
+
+      \    },\r
+
+      };\r
+
+      \ \r
+
+      pm.sendRequest(createUserBRequest, (error, response) => {\r
+
+      \    console.log(error ? error : response);\r
+
+      \ \r
+
+      \    // Setelah terdaftar, login dengan User B\r
+
+      \    const loginUserRequest = {\r
+
+      \        url: 'http://localhost:3000/authentications',\r
+
+      \        method: 'POST',\r
+
+      \        header: {\r
+
+      \            'Content-Type': 'application/json',\r
+
+      \        },\r
+
+      \        body: {\r
+
+      \            mode: 'raw',\r
+
+      \            raw: JSON.stringify({\r
+
+      \                username: 'user_b',\r
+
+      \                password: 'secret',\r
+
+      \            }),\r
+
+      \        },\r
+
+      \    };\r
+
+      \ \r
+
+      \    pm.sendRequest(loginUserRequest, (error, response) => {\r
+
+      \        if (!error) {\r
+
+      \            // memasukkan access token User B ke environment variabel\r
+
+      \            const { data: { accessToken } } = response.json();\r
+
+      \            pm.environment.set('accessTokenUserB', accessToken);\r
+
+      \        }\r
+
+      \    });\r
+
+      });"
+    language: text/javascript
+order: 19000

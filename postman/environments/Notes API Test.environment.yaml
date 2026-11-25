@@ -21,6 +21,14 @@ values:
   - key: badNotePayloads
     value: ''
   - key: accessToken
-    value: ''
+    secret: true
   - key: refreshToken
+    secret: true
+  - key: accessTokenUserA
+    value: ''
+  - key: accessTokenUserB
+    value: ''
+  - key: noteIdUserA
+    value: ''
+  - key: noteIdUserB
     value: ''

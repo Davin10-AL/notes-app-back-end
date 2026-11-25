@@ -1,0 +1,44 @@
+$kind: http-request
+url: http://localhost:3000/notes/{{noteIdUserA}}
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessTokenUserA}}"
+scripts:
+  - type: afterResponse
+    code: "pm.test('response status code should have 200 value', () => {\r
+
+      \   pm.response.to.have.status(200);\r
+
+      }); \r
+
+      \ \r
+
+      pm.test('response Content-Type header should have application/json value', () => {\r
+
+      \  pm.expect(pm.response.headers.get('Content-Type')).to.equals('application/json; charset=utf-8');\r
+
+      });\r
+
+      \ \r
+
+      pm.test('response body data should contains object note', () => {\r
+
+      \    const responseJson = pm.response.json();\r
+
+      \ \r
+
+      \    pm.expect(responseJson).to.be.an('object');\r
+
+      \    pm.expect(responseJson).to.have.ownProperty('data');\r
+
+      \    pm.expect(responseJson.data).to.be.an('object');\r
+
+      \    pm.expect(responseJson.data).to.have.ownProperty('note');\r
+
+      \    pm.expect(responseJson.data.note).to.be.an('object');\r
+
+      });"
+    language: text/javascript
+order: 5000
