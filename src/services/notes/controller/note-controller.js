@@ -89,7 +89,7 @@ export const deleteNoteById = async (req, res, next) => {
       return next(new NotFoundError('Catatan tidak ditemukan'));
     }
 
-    return response(res, 200, 'Catatan berhasil dihapus', deletedNote);
+    return response(res, 200, 'catatan berhasil dihapus', deletedNote);
   } catch (err) {
     return next(err);
   }
