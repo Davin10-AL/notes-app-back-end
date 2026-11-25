@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import AuthenticationError from '../exceptions/authentication-error.js';
+import InvariantError from '../exceptions/invariant-error.js';
 
 const TokenManager = {
   generateAccessToken(payload) {
@@ -14,7 +15,7 @@ const TokenManager = {
     try {
       return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
     } catch {
-      throw new AuthenticationError('Refresh token tidak valid');
+      throw new InvariantError('Refresh token tidak valid');
     }
   },
 

@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import bcrypt from 'bcrypt';
+import AuthenticationError from '../../../exceptions/authentication-error.js';
 import InvariantError from '../../../exceptions/invariant-error.js';
-import NotFoundError from '../../../exceptions/not-found-error.js';
 
 class AuthenticationRepositories {
   constructor() {
@@ -17,14 +17,14 @@ class AuthenticationRepositories {
     const result = await this.pool.query(query);
 
     if (result.rows.length === 0) {
-      throw new InvariantError('Kredensial yang Anda berikan salah');
+      throw new AuthenticationError('Kredensial yang Anda berikan salah');
     }
 
     const { id, password: hashedPassword } = result.rows[0];
     const match = await bcrypt.compare(password, hashedPassword);
 
     if (!match) {
-      throw new InvariantError('Kredensial yang Anda berikan salah');
+      throw new AuthenticationError('Kredensial yang Anda berikan salah');
     }
 
     return id;
